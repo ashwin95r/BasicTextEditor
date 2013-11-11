@@ -5,6 +5,8 @@ typedef struct
   GtkWidget *textview, *search;
 } TextEditor;
 
+
+
 void
 search_button_clicked (GtkWidget *search_button, TextEditor *editor)
 {
@@ -24,10 +26,12 @@ search_button_clicked (GtkWidget *search_button, TextEditor *editor)
   gtk_text_buffer_get_start_iter (buffer, &iter);
   found = gtk_text_iter_forward_search (&iter, text, 0, &mstart, &mend, NULL);
 	
-	highlight_tag = gtk_text_buffer_create_tag(buffer, "blue_fg", 
-    							 "foreground", "blue", NULL);
+	highlight_tag = gtk_text_buffer_create_tag(buffer, "highlight_text",
+    							 "foreground", "blue", NULL);	
 	
-
+	void gtk_text_buffer_remove_all_tags( GtkTextBuffer     *buffer,
+                                      const GtkTextIter *start,
+                                      const GtkTextIter *end );
 	while(found == 1){
 	
 	found = gtk_text_iter_forward_search (&iter, text, 0, &mstart, &mend, NULL);
@@ -35,11 +39,13 @@ search_button_clicked (GtkWidget *search_button, TextEditor *editor)
   if (found){
       /* If found, highlight the text. */
   //  gtk_text_buffer_select_range (buffer, &mstart, &mend);
-	gtk_text_buffer_apply_tag(buffer, highlight_tag, &mstart, &mend);	
+	//gtk_text_buffer_apply_tag(buffer, highlight_tag, &mstart, &mend);	
+	gtk_text_buffer_apply_tag_by_name( buffer,"highlight_text",&mstart,&mend );	
 	iter = mend;
 	}
 
 	}
+	
 }
 
 void
@@ -51,8 +57,7 @@ font_highlight ( TextEditor *editor)
   GtkTextIter mstart, mend; 
   gboolean found;
 	gchar text_highlight;	
-	GtkTextTag *highlight_tag;
-
+ 	GtkTextTag *highlight_tag2;	
   text = "for";
 
   /* Get the buffer associated with the text view widget. */
@@ -61,8 +66,8 @@ font_highlight ( TextEditor *editor)
   gtk_text_buffer_get_start_iter (buffer, &iter);
   found = gtk_text_iter_forward_search (&iter, text, 0, &mstart, &mend, NULL);
 	
-	highlight_tag = gtk_text_buffer_create_tag(buffer, "blue_fg", 
-    							 "foreground", "blue", NULL);
+	highlight_tag2 = gtk_text_buffer_create_tag(buffer, "blue_fg", 
+							 "foreground", "blue", NULL);
 	
 
 	while(found == 1){
@@ -72,11 +77,12 @@ font_highlight ( TextEditor *editor)
   if (found){
       /* If found, highlight the text. */
   //  gtk_text_buffer_select_range (buffer, &mstart, &mend);
-	gtk_text_buffer_apply_tag(buffer, highlight_tag, &mstart, &mend);	
+	gtk_text_buffer_apply_tag_by_name( buffer,"blue_fg",&mstart,&mend );	
 	iter = mend;
 	}
 
 	}
+	
 }
 
 
@@ -108,7 +114,7 @@ int main (int argc,
   GtkTextBuffer *buffer;
 
 
-
+	//git add
   
   gtk_init (&argc, &argv);
   
@@ -134,7 +140,6 @@ int main (int argc,
   
   toolbar = gtk_toolbar_new();
   gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
-
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 2);
 
   new = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
@@ -185,7 +190,9 @@ int main (int argc,
   g_signal_connect_object(buffer, "mark_set", 
         G_CALLBACK(mark_set_callback), statusbar, 0);
 
-	font_highlight(editor);
+//	g_signal_connect(buffer, "changed",
+//       G_CALLBACK(font_highlight), editor);
+
 
   menubar = gtk_menu_bar_new();
   filemenu = gtk_menu_new();
