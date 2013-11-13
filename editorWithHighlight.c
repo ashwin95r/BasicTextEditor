@@ -184,8 +184,7 @@ get_tip(gchar *text)
   return g_strdup (tips[i][1]);
 }
 
-GtkWidget *
-tip_window_new (gchar *tip)
+GtkWidget * tip_window_new (gchar *tip)
 {
   GtkWidget *win;
   GtkWidget *label;
@@ -229,8 +228,7 @@ tip_window_new (gchar *tip)
 }
 
 
-void
-insert_open_brace(GtkWidget **tip_win, GtkWidget *text_view, GtkTextIter *arg1)
+void insert_open_brace(GtkWidget **tip_win, GtkWidget *text_view, GtkTextIter *arg1)
 {
   GdkWindow *win;
   GtkTextIter start;
@@ -288,8 +286,7 @@ insert_close_brace (GtkWidget **tip_win)
     }
 }
 
-void
-buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
+void buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
                     gchar *arg2, gint arg3, gpointer user_data)
 {
   static GtkWidget *tip_win = NULL;
@@ -306,8 +303,7 @@ buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
 		
 }
 
-int main (int argc,
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *scrolled_win, *vbox, *searchbar, *toolbar, *find, *menubar, *filemenu, *file, *quit, *statusbar ; 
   TextEditor *editor = g_slice_new (TextEditor);
@@ -448,9 +444,7 @@ int main (int argc,
 
 /* Verify that the user want to create a new document. If so, delete
  * all of the text from the buffer. */
-static void 
-new_clicked (GtkToolButton *cut, 
-             TextEditor *editor)
+static void new_clicked (GtkToolButton *cut, TextEditor *editor)
 {
   GtkWidget *dialog;
   GtkTextBuffer *buffer;
@@ -471,9 +465,7 @@ new_clicked (GtkToolButton *cut,
 }
 
 /* Replace the content of the current buffer with the content of a file. */
-static void 
-open_clicked (GtkToolButton *cut, 
-              TextEditor *editor)
+static void open_clicked (GtkToolButton *cut,  TextEditor *editor)
 {
   GtkWidget *dialog;
   gint result;
@@ -503,9 +495,7 @@ open_clicked (GtkToolButton *cut,
 }
 
 /* Save the content of the current buffer to a file. */
-static void 
-save_clicked (GtkToolButton *cut, 
-              TextEditor *editor)
+static void save_clicked (GtkToolButton *cut, TextEditor *editor)
 {
   GtkWidget *dialog;
   gint result;
@@ -537,9 +527,7 @@ save_clicked (GtkToolButton *cut,
 }
 
 /* Copy the selection to the clipboard and remove it from the buffer. */
-static void 
-cut_clicked (GtkToolButton *cut, 
-             TextEditor *editor)
+static void cut_clicked (GtkToolButton *cut, TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
@@ -550,9 +538,7 @@ cut_clicked (GtkToolButton *cut,
 }
 
 /* Copy the selection to the clipboard. */
-static void 
-copy_clicked (GtkToolButton *copy, 
-              TextEditor *editor)
+static void copy_clicked (GtkToolButton *copy, TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
@@ -564,9 +550,7 @@ copy_clicked (GtkToolButton *copy,
 
 /* Delete any selected text and insert the clipboard content into
  * the document. */
-static void 
-paste_clicked (GtkToolButton *paste, 
-               TextEditor *editor)
+static void paste_clicked (GtkToolButton *paste, TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
@@ -578,9 +562,7 @@ paste_clicked (GtkToolButton *paste,
 
 /* Search for a text string from the current cursor position if there is no
  * selected text, or one character after the cursor if there is. */
-static void 
-find_clicked (GtkButton *cut, 
-              TextEditor *editor)
+static void find_clicked (GtkButton *cut, TextEditor *editor)
 {
   const gchar *find;
   gchar *output;
@@ -630,8 +612,7 @@ void undo_redo(GtkWidget *widget,  gpointer item)
   }
 }
 
-static void update_statusbar(GtkTextBuffer *buffer,
-    GtkStatusbar  *statusbar)
+static void update_statusbar(GtkTextBuffer *buffer, GtkStatusbar  *statusbar)
 {
   gchar *msg;
   gint row, col;
@@ -652,10 +633,7 @@ static void update_statusbar(GtkTextBuffer *buffer,
   g_free(msg);
 }
 
-static void
-mark_set_callback(GtkTextBuffer *buffer,
-    const GtkTextIter *new_location, GtkTextMark *mark,
-    gpointer data)
+static void mark_set_callback(GtkTextBuffer *buffer, const GtkTextIter *new_location, GtkTextMark *mark, gpointer data)
 {
   update_statusbar(buffer, GTK_STATUSBAR(data));
 }
