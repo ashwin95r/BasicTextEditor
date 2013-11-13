@@ -7,7 +7,6 @@
 
 
 #include <gtk/gtk.h>
-#include <stdio.h>
 
 /* List of functions and their corresponding tool tips. */
 static char *tips[][2] = 
