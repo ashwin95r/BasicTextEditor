@@ -16,7 +16,6 @@ static char *tips[][2] =
     {"fprintf", "(FILE *stream, const char *format, ...)"},
     {"scanf", "(const char *format, ...)"},
     {"snprintf", "(char *str, size_t size, const char *format, ...)"},
-    {"fputc", "(int c, FILE *stream)"},
     {"fputs", "(const char *s, FILE *stream)"},
     {"putc", "(int c, FILE *stream)"},
     {"putchar", "(int c)"},
@@ -305,7 +304,7 @@ buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
     {
       insert_close_brace(&tip_win);
     }
-	
+		
 }
 
 int main (int argc,
@@ -325,8 +324,7 @@ int main (int argc,
   GtkTextBuffer *buffer;
 
 	PangoFontDescription *pfd;
-	//git add
-  
+	
   gtk_init (&argc, &argv);
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -431,10 +429,10 @@ int main (int argc,
   gtk_box_pack_start (GTK_BOX (searchbar), editor->search, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (searchbar), find, FALSE, FALSE, 0);
  	
-/*tooltip*/
+
 	pfd = pango_font_description_from_string ("courier");
   gtk_widget_modify_font (editor->textview, pfd);
-/*tooltip*/ 
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
