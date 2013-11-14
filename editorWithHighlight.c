@@ -184,6 +184,57 @@ get_tip(gchar *text)
   return g_strdup (tips[i][1]);
 }
 
+gint get_pos(gchar *text)
+{
+  gint i;
+  gboolean found;
+
+  found = FALSE;
+  for (i = 0; i < NUM_TIPS; i++)
+    {
+      if (strcmp (text, tips[i][0]) == 0)
+        {
+          found = TRUE;
+          break;
+        }
+    }
+  if (!found)
+    return 0;
+
+  return 1;
+}
+
+void find_syntax(GtkWidget *text_view, GtkTextIter *arg1)
+{
+  GdkWindow *win;
+  GtkTextIter start;
+  GdkRectangle buf_loc;
+  gint x, y;
+  gint win_x, win_y;
+  gchar *text;
+  gint found=0;
+  
+  /* Get the word at cursor. */
+  start = *arg1;
+  if (!gtk_text_iter_backward_word_start (&start))
+    return;
+  text = gtk_text_iter_get_text (&start, arg1);
+  g_strstrip (text);
+
+  /* Get the corresponding tooltip. */
+  found= get_pos(text);  
+  if (found == 0)
+    return;
+  
+  /* Calculate the tool tip window location. */
+  gtk_text_view_get_iter_location (GTK_TEXT_VIEW (text_view), arg1, 
+                                   &buf_loc);
+ // g_printf ("Buffer: %d, %d\n", buf_loc.x, buf_loc.y);
+  g_printf ("%s found at: %d, %d\n",text,gtk_text_iter_get_line_offset(&start)+1,1+gtk_text_iter_get_line(&start));
+
+}
+
+
 GtkWidget * tip_window_new (gchar *tip)
 {
   GtkWidget *win;
@@ -290,6 +341,7 @@ void buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
                     gchar *arg2, gint arg3, gpointer user_data)
 {
   static GtkWidget *tip_win = NULL;
+	static gint space;
 
   if (strcmp (arg2, "(") == 0)
     {
@@ -300,7 +352,15 @@ void buffer_insert_text (GtkTextBuffer *textbuffer, GtkTextIter *arg1,
     {
       insert_close_brace(&tip_win);
     }
-		
+	if ((strcmp(arg2, " ")&&strcmp(arg2,"\n"))==0)
+	{	if(space == 0)
+			{	find_syntax(GTK_WIDGET (user_data), arg1);
+				space = 1;
+			}
+	}
+	else{
+		space = 0;
+	}
 }
 
 int main (int argc, char *argv[])
