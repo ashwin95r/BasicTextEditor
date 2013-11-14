@@ -162,6 +162,7 @@ static void copy_clicked (GtkToolButton*, TextEditor*);
 static void paste_clicked (GtkToolButton*, TextEditor*);
 static void find_clicked (GtkButton*, TextEditor*);
 void undo_redo(GtkWidget *widget,  gpointer item);
+static void font_clicked (GtkToolButton *cut, TextEditor *editor);
 
 gchar *
 get_tip(gchar *text)
@@ -375,10 +376,11 @@ int main (int argc, char *argv[])
   GtkToolItem *exit;
   GtkToolItem *undo;
   GtkToolItem *redo;
+	GtkToolItem *font1;
 
   GtkTextBuffer *buffer;
 
-	PangoFontDescription *pfd;
+	
 	
   gtk_init (&argc, &argv);
   
@@ -435,11 +437,16 @@ int main (int argc, char *argv[])
   
   redo = gtk_tool_button_new_from_stock(GTK_STOCK_REDO);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), redo, -1);
-  
-  g_signal_connect(G_OBJECT(redo), "clicked", 
+
+	g_signal_connect(G_OBJECT(redo), "clicked", 
         G_CALLBACK(undo_redo), undo);
   g_signal_connect(G_OBJECT(undo), "clicked", 
         G_CALLBACK(undo_redo), redo);
+	
+	font1 = gtk_tool_button_new_from_stock(GTK_STOCK_SELECT_FONT);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), font1, -1);
+/*  g_signal_connect (G_OBJECT (save), "clicked", G_CALLBACK (font_clicked), (gpointer) editor);  
+ */ 
   
   exit = gtk_tool_button_new_from_stock(GTK_STOCK_QUIT);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), exit, -1);
@@ -485,9 +492,7 @@ int main (int argc, char *argv[])
   gtk_box_pack_start (GTK_BOX (searchbar), find, FALSE, FALSE, 0);
  	
 
-	pfd = pango_font_description_from_string ("courier");
-  gtk_widget_modify_font (editor->textview, pfd);
-
+	
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
@@ -501,6 +506,29 @@ int main (int argc, char *argv[])
   gtk_main();
   return 0;
 }
+/*
+static void font_clicked (GtkToolButton *cut, TextEditor *editor)
+{
+	PangoFontDescription *pfd;
+	
+	if(pango_style_get_type (pfd)==0)
+	{
+	*pfd = pango_style_set_type (1);
+  gtk_widget_modify_font (editor->textview, pfd);
+	}
+	else if(pango_style_get_type (pfd)==1)
+	{*pfd =pango_style_set_type (2);
+  gtk_widget_modify_font (editor->textview, pfd);
+	
+	}
+	else if(pango_style_get_type (pfd)==2)
+	{*pfd = pango_style_set_type (0);
+  gtk_widget_modify_font (editor->textview, pfd);
+	
+
+	}			
+}
+*/
 
 /* Verify that the user want to create a new document. If so, delete
  * all of the text from the buffer. */
